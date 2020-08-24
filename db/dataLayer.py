@@ -1,8 +1,10 @@
+import io
+import os
+
+from flask import send_file
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from model.user import User
-
-
 
 
 class DataLayer:
@@ -25,3 +27,5 @@ class DataLayer:
         users = session.query(User).all()
         print(users)
         return users
+
+

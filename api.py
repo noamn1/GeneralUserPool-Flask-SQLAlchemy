@@ -1,5 +1,7 @@
+import io
+import os
 
-from flask import Flask, request, json
+from flask import Flask, request, json, send_file
 
 from db.AlchemyEncoder import AlchemyEncoder
 from db.dataLayer import DataLayer
@@ -41,5 +43,21 @@ def get_users():
                               mimetype="application/json")
 
 
+@app.route("/user/<string:pid>/image")
+def get_image(pid):
+
+    dir_name = os.path.join('images', 'users', pid)
+    for file in os.listdir(dir_name):
+        file_name = os.path.join('images', 'users', pid, file)
+        with open(file_name, "rb") as bites:
+            return send_file(
+                io.BytesIO(bites.read()),
+                attachment_filename=pid + '.png',
+                mimetype='image/png'
+            )
+
+    return None
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

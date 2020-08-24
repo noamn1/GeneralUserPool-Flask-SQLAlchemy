@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from model.outputMixin import OutputMixin
 
 Base = declarative_base()
 
@@ -14,7 +13,7 @@ class Role(Base):
     des = Column(String)
 
     def to_json(self):
-        return {"name":self.name, "des": self.des}
+        return {"name": self.name, "des": self.des}
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -35,11 +34,12 @@ class User(Base):
         for r in self.roles:
             roles.append(r.to_json())
 
-        return {"first_name": self.first_name, "last_name":self.last_name,
-                "email": self.email, "roles": roles}
+        return {"id": self.id, "first_name": self.first_name, "last_name": self.last_name,
+                "email": self.email, "roles": roles, "age": self.age}
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class UserRole(Base):
    __tablename__ = 'users_roles'
